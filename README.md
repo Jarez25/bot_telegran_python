@@ -60,6 +60,3 @@ Puedes consultar la documentación oficial de pyTelegramBotAPI aquí:
 MIT License.
 
 
----
-
-Si quieres, también te puedo generar el archivo `requirements.txt`. ¿Lo deseas?
