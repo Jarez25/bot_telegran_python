@@ -1,4 +1,5 @@
 import telebot
+from telebot import types
 import requests
 import os
 from dotenv import load_dotenv
@@ -61,10 +62,29 @@ def mostrar_desarrolladores(message):
         mensaje += f"{i}. {dev}\n"
     bot.reply_to(message, mensaje)
 
+
+
+@bot.message_handler(commands=['Woo'])
+def send_option(message):
+    markup = types.InlineKeyboardMarkup(row_width=2)
+    btn_si = types.InlineKeyboardButton('Sí', callback_data='Ejecutar')
+    btn_no = types.InlineKeyboardButton('No', callback_data='cancelar')    
+    
+    markup.add(btn_si, btn_no)
+    bot.send_message(message.chat.id, "¿Quieres sincronizar tus productos en tu tienda?", reply_markup=markup)
+
+@bot.callback_query_handler(func=lambda call: True)
+def callback_query(call):
+    if call.data == 'Ejecutar':
+        bot.send_message(call.message.chat.id, "Sincronizando productos...")
+    elif call.data == 'cancelar':
+        bot.send_message(call.message.chat.id, "Sincronización cancelada.")
+
+
 @bot.message_handler(func=lambda message: True)
 def echo_all(message):
     bot.reply_to(message, message.text)
-
+      
 if __name__ == '__main__':
     try:
         print("Bot is running...")
