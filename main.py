@@ -2,6 +2,8 @@ import telebot
 from telebot import types
 import requests
 import os
+
+from insert_user import insert_user
 from dotenv import load_dotenv
 
 # Tu token de Telegram
@@ -11,6 +13,7 @@ API_TOKEN = os.getenv('TELEGRAM_TOKEN')
 WEATHER_API_KEY = os.getenv('WEATHER_API')
 
 bot = telebot.TeleBot(API_TOKEN)
+
 
 # Lista de desarrolladores
 desarrolladores = ["@jarez", "(vacío)", "(vacío)"]
@@ -25,11 +28,10 @@ def send_help(message):
 
 @bot.message_handler(commands=['agregar'])
 def agregar_usuario(message):
-    nombre = message.text[len('/agregar '):].strip()
-    if len(nombre) >= 3:
-        bot.reply_to(message, f"Usuario '{nombre}' agregado correctamente.")
-    else:
-        bot.reply_to(message, "El nombre debe tener al menos 3 caracteres.")
+    telegram_id = message.from_user.id
+    username = message.from_user.username
+    insert_user(telegram_id, username)
+    bot.reply_to(message, f"Usuario {username} agregado con ID {telegram_id}.")
 
 @bot.message_handler(commands=['clima'])
 def obtener_clima(message):
@@ -79,6 +81,15 @@ def callback_query(call):
         bot.send_message(call.message.chat.id, "Sincronizando productos...")
     elif call.data == 'cancelar':
         bot.send_message(call.message.chat.id, "Sincronización cancelada.")
+        
+
+@bot.message_handler(commands=['waifu'])
+def send_waifu(message):
+    image_url = "https://i.pinimg.com/736x/d9/3e/39/d93e397f69f3d0eb75969cf9bde0dd85.jpg"
+    try:
+        bot.send_photo(message.chat.id, image_url)
+    except Exception as e:
+        bot.reply_to(message, f"Error al enviar la imagen: {e}")
 
 
 @bot.message_handler(func=lambda message: True)
