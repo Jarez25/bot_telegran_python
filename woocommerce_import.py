@@ -1,13 +1,14 @@
 import json
+import requests
 from woocommerce import API
 
 mensajes_bot = []
 
-# Definir wcapi globalmente
+# Conexión WooCommerce
 wcapi = API(
-    url="http://telegran.test/",
-    consumer_key="ck_16e6900c7bb7eae06702a478c8b3e455a00623a1",
-    consumer_secret="cs_950614640a36fceb309c61141a16106db9afe11b",
+    url="http://teleapp.test/",  # Asegúrate de que este dominio sea válido
+    consumer_key="ck_3c69dfb55e7a995cd4305c9fda440350bce945eb",
+    consumer_secret="cs_67bd944bb29e230039a4d311be133ee24a1d7717",
     version="wc/v3"
 )
 
@@ -23,8 +24,10 @@ def actualizar_producto(producto_local):
     producto_remoto = obtener_producto_por_sku(producto_local["sku"])
 
     if not producto_remoto:
+        # Crear producto si no existe
+        response = wcapi.post("products", producto_local).json()
         mensajes_bot.append(
-            f"❌ Producto no encontrado para actualizar: {producto_local['name']}")
+            f"🆕 Producto creado: {producto_local['name']} ({producto_local['sku']})")
         return
 
     producto_id = producto_remoto["id"]
@@ -35,23 +38,28 @@ def actualizar_producto(producto_local):
         if campo in producto_local and producto_local.get(campo) != producto_remoto.get(campo):
             cambios[campo] = producto_local[campo]
 
+    # Verificar imagen
+    imagen_local = producto_local.get("images", [])
+    imagen_remota = producto_remoto.get("images", [])
+
+    if imagen_local and (not imagen_remota or imagen_local[0]["src"] != imagen_remota[0]["src"]):
+        cambios["images"] = imagen_local
+
     if cambios:
-        response = wcapi.put(f"products/{producto_id}", cambios).json()
+        wcapi.put(f"products/{producto_id}", cambios).json()
         mensajes_bot.append(
             f"🔄 Producto actualizado: {producto_local['name']} ({producto_local['sku']})")
     else:
         mensajes_bot.append(
             f"✅ Sin cambios: {producto_local['name']} ({producto_local['sku']})")
 
-    # Si el producto es variable, revisamos variaciones
-    if producto_local["type"] == "variable":
+    if producto_local.get("type") == "variable":
         actualizar_variaciones(
             producto_id, producto_local.get("variations", []))
 
 
 def actualizar_variaciones(parent_id, variaciones_locales):
     variaciones_remotas = wcapi.get(f"products/{parent_id}/variations").json()
-
     skus_remotos = {v["sku"]: v for v in variaciones_remotas if v["sku"]}
 
     for variacion in variaciones_locales:
@@ -74,24 +82,30 @@ def actualizar_variaciones(parent_id, variaciones_locales):
             else:
                 mensajes_bot.append(f"✅ Sin cambios en variación: {sku}")
         else:
-            # Si no existe, se crea
             wcapi.post(f"products/{parent_id}/variations", variacion).json()
             mensajes_bot.append(f"🆕 Variación creada: {sku}")
 
 
 def actualizar_productos():
-    with open('product.json', 'r', encoding='utf-8') as file:
-        productos = json.load(file)
+    response = requests.get("https://fakestoreapi.com/products")
+    productos_falsos = response.json()
 
-    for producto in productos:
-        if producto["type"] != "variation":
-            actualizar_producto(producto)
+    for p in productos_falsos:
+        producto = {
+            "sku": f"FAKE-{p['id']}",
+            "name": p['title'],
+            "price": str(p['price']),
+            "regular_price": str(p['price']),
+            "stock_quantity": 10,
+            "type": "simple",
+            "images": [{"src": p["image"]}]
+        }
+        actualizar_producto(producto)
 
 
 if __name__ == "__main__":
     actualizar_productos()
 
-    # Guardar mensajes
     with open("mensajes_bot.txt", "w", encoding="utf-8") as f:
         for m in mensajes_bot:
             f.write(m + "\n")

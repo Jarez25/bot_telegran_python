@@ -27,7 +27,6 @@ def send_help(message):
         "/Woo - Pregunta si quieres sincronizar los productos en tu tienda WooCommerce.\n"
         "/update - Actualiza los productos en tu tienda WooCommerce.\n"
         "/producto SKU - Consulta la información de un producto usando su SKU.\n"
-        "/waifu - Envía una imagen waifu al chat.\n"
     )
     bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
 
@@ -129,7 +128,7 @@ def update_products(message):
         bot.send_message(message.chat.id, f"❌ Error inesperado: {e}")
 
 
-@bot.message_handler(commands=['producto'])
+@bot.message_handler(commands=['producto'])  # obtener producto por SKU
 def consultar_producto(message):
     partes = message.text.strip().split()
     if len(partes) < 2:
@@ -159,15 +158,6 @@ def consultar_producto(message):
     else:
         bot.send_message(
             message.chat.id, f"❌ No se encontró ningún producto con el SKU `{sku}`.", parse_mode="Markdown")
-
-
-@bot.message_handler(commands=['waifu'])
-def send_waifu(message):
-    image_url = "https://i.pinimg.com/736x/d9/3e/39/d93e397f69f3d0eb75969cf9bde0dd85.jpg"
-    try:
-        bot.send_photo(message.chat.id, image_url)
-    except Exception as e:
-        bot.reply_to(message, f"Error al enviar la imagen: {e}")
 
 
 @bot.message_handler(func=lambda message: True)
