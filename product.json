@@ -1,0 +1,63 @@
+[
+  {
+    "name": "Camiseta Básica",
+    "type": "simple",
+    "regular_price": "10.00",
+    "description": "Una camiseta básica de algodón.",
+    "short_description": "Camiseta simple.",
+    "sku": "CMBSC-001",
+    "manage_stock": true,
+    "stock_quantity": 100
+  },
+  {
+    "name": "Pantalón Deportivo",
+    "type": "variable",
+    "description": "Pantalón deportivo unisex.",
+    "short_description": "Pantalón variable con tallas.",
+    "sku": "PNTDPT-001",
+    "attributes": [
+      {
+        "name": "Talla",
+        "variation": true,
+        "visible": true,
+        "options": ["S", "M", "L"]
+      }
+    ]
+  },
+  {
+    "name": "Pantalón Deportivo - Talla S",
+    "type": "variation",
+    "regular_price": "25.00",
+    "sku": "PNTDPT-001-S",
+    "attributes": [
+      {
+        "name": "Talla",
+        "option": "S"
+      }
+    ]
+  },
+  {
+    "name": "Pantalón Deportivo - Talla M",
+    "type": "variation",
+    "regular_price": "25.00",
+    "sku": "PNTDPT-001-M",
+    "attributes": [
+      {
+        "name": "Talla",
+        "option": "M"
+      }
+    ]
+  },
+  {
+    "name": "Pantalón Deportivo - Talla L",
+    "type": "variation",
+    "regular_price": "25.00",
+    "sku": "PNTDPT-001-L",
+    "attributes": [
+      {
+        "name": "Talla",
+        "option": "L"
+      }
+    ]
+  }
+]
