@@ -1,6 +1,5 @@
 import requests
 from funciones.actualizar_producto import actualizar_producto
-from conn.woocommerce_config import wcapi, mensajes_bot
 
 
 def actualizar_productos():
@@ -18,11 +17,3 @@ def actualizar_productos():
             "images": [{"src": p["image"]}]
         }
         actualizar_producto(producto)
-
-
-if __name__ == "__main__":
-    actualizar_productos()
-
-    with open("mensajes_bot.txt", "w", encoding="utf-8") as f:
-        for m in mensajes_bot:
-            f.write(m + "\n")

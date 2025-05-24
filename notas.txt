@@ -1,0 +1,9 @@
+| Tipo       | Uso                                                  |
+| ---------- | ---------------------------------------------------- |
+| `feat`     | Nueva funcionalidad                                  |
+| `fix`      | Corrección de bugs                                   |
+| `refactor` | Cambios en el código que no agregan ni corrigen bugs |
+| `chore`    | Tareas generales (actualizar .env, configs, etc)     |
+| `docs`     | Cambios en la documentación                          |
+| `test`     | Agregar o cambiar pruebas                            |
+| `style`    | Cambios de formato, sin tocar lógica (espacios, etc) |

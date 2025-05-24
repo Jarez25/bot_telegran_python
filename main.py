@@ -8,6 +8,9 @@ from dotenv import load_dotenv
 from funciones.crear_categoria import crear_categoria
 from funciones.conteo_productos import contar_productos
 from funciones.obtener_producto_sku import obtener_producto_por_sku
+from funciones.actualizar_producto import actualizar_producto
+from bot.servicios.clima_servicio import comando_clima
+from bot.comandos.start import comandos_basicos, comandos_woo
 from conn.woocommerce_config import wcapi
 
 
@@ -16,49 +19,10 @@ WEATHER_API_KEY = os.getenv('WEATHER_API')
 bot = telebot.TeleBot(API_TOKEN)
 
 
-@bot.message_handler(commands=['start'])
-def send_welcome(message):
-    bot.reply_to(message, "Hola, este bot está hecho para GBP.")
+comandos_basicos(bot)
+bot.set_my_commands(comandos_woo)
 
-
-@bot.message_handler(commands=['help'])
-def send_help(message):
-    texto_ayuda = (
-        "🤖 *Funciones del bot GBP:*\n\n"
-        "/start - Inicia el bot y muestra un mensaje de bienvenida.\n"
-        "/help - Muestra esta lista de comandos disponibles.\n"
-        "/clima - Muestra el clima actual de Managua.\n"
-        "/Woo - Pregunta si quieres sincronizar los productos en tu tienda WooCommerce.\n"
-        "/update - Actualiza los productos en tu tienda WooCommerce.\n"
-        "/producto SKU - Consulta la información de un producto usando su SKU.\n"
-    )
-    bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
-
-
-@bot.message_handler(commands=['clima'])
-def obtener_clima(message):
-    ciudad = "Managua,NI"
-    url = f"https://api.openweathermap.org/data/2.5/weather?q={ciudad}&appid={WEATHER_API_KEY}&units=metric&lang=es"
-
-    try:
-        respuesta = requests.get(url)
-        datos = respuesta.json()
-
-        if datos.get("cod") != 200:
-            bot.reply_to(
-                message, f"No se pudo obtener el clima: {datos.get('message', 'Error desconocido')}")
-            return
-
-        temp = datos['main']['temp']
-        descripcion = datos['weather'][0]['description']
-        humedad = datos['main']['humidity']
-        viento = datos['wind']['speed']
-
-        mensaje = f"🌤️ Clima en Managua:\n- Temperatura: {temp}°C\n- Estado: {descripcion}\n- Humedad: {humedad}%\n- Viento: {viento} m/s"
-        bot.reply_to(message, mensaje)
-
-    except Exception as e:
-        bot.reply_to(message, f"Error al obtener el clima: {e}")
+comando_clima(bot, WEATHER_API_KEY)
 
 
 @bot.message_handler(commands=['agregar'])
@@ -69,7 +33,7 @@ def agregar_usuario(message):
     bot.reply_to(message, f"Usuario {username} agregado con ID {telegram_id}.")
 
 
-@bot.message_handler(commands=['Woo'])
+@bot.message_handler(commands=['woo'])
 def send_option(message):
     markup = types.InlineKeyboardMarkup(row_width=2)
     btn_si = types.InlineKeyboardButton('Sí', callback_data='Ejecutar')
