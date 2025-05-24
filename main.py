@@ -5,7 +5,11 @@ import os
 import subprocess
 from insert_user import insert_user
 from dotenv import load_dotenv
-from woocommerce_import import obtener_producto_por_sku
+from funciones.crear_categoria import crear_categoria
+from funciones.conteo_productos import contar_productos
+from funciones.obtener_producto_sku import obtener_producto_por_sku
+from conn.woocommerce_config import wcapi
+
 
 API_TOKEN = os.getenv('TELEGRAM_TOKEN')
 WEATHER_API_KEY = os.getenv('WEATHER_API')
@@ -158,6 +162,70 @@ def consultar_producto(message):
     else:
         bot.send_message(
             message.chat.id, f"❌ No se encontró ningún producto con el SKU `{sku}`.", parse_mode="Markdown")
+
+
+# cuenta total de productos
+@bot.message_handler(commands=['conteo_productos'])
+def handler_contar_productos(message):
+    total = contar_productos()
+    bot.send_message(
+        message.chat.id,
+        f"📊 Total de productos en la tienda: *{total}*",
+        parse_mode="Markdown"
+    )
+
+
+@bot.message_handler(commands=['todos_los_productos'])  # lista los productos
+def listar_productos(message):
+    productos = []
+    pagina = 1
+
+    while True:
+        response = wcapi.get("products", params={
+                             "per_page": 100, "page": pagina}).json()
+        if not response:
+            break
+        productos.extend(response)
+        pagina += 1
+
+    if productos:
+        mensaje = f"📦 Se encontraron *{len(productos)}* productos:\n\n"
+        # Muestra los primeros 10 para no saturar
+        for producto in productos[:10]:
+            nombre = producto.get("name", "Sin nombre")
+            sku = producto.get("sku", "Sin SKU")
+            mensaje += f"🔹 *{nombre}* (`{sku}`)\n"
+        if len(productos) > 10:
+            mensaje += f"\n...y {len(productos) - 10} más."
+    else:
+        mensaje = "❌ No se encontraron productos en la tienda."
+
+    bot.send_message(message.chat.id, mensaje, parse_mode="Markdown")
+
+
+@bot.message_handler(commands=['nueva_categoria'])  # crear una nueva categoría
+def comando_crear_categoria(message):
+    partes = message.text.strip().split(maxsplit=1)
+    if len(partes) < 2:
+        bot.send_message(
+            message.chat.id, "❗️Por favor, usa el comando así:\n/nueva_categoria Nombre de la categoría")
+        return
+
+    nombre_categoria = partes[1]
+    resultado = crear_categoria(nombre_categoria)
+
+    if resultado:
+        bot.send_message(
+            message.chat.id,
+            f"✅ Categoría creada con éxito:\n📛 Nombre: *{resultado['name']}*\n🆔 ID: `{resultado['id']}`",
+            parse_mode="Markdown"
+        )
+    else:
+        bot.send_message(
+            message.chat.id,
+            "❌ No se pudo crear la categoría. Verifica si ya existe o si hubo un error.",
+            parse_mode="Markdown"
+        )
 
 
 @bot.message_handler(func=lambda message: True)

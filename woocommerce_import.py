@@ -1,61 +1,78 @@
 import json
 import requests
-from woocommerce import API
+from conn.woocommerce_config import wcapi
+import time
+
 
 mensajes_bot = []
 
-# Conexión WooCommerce
-wcapi = API(
-    url="http://teleapp.test/",  # Asegúrate de que este dominio sea válido
-    consumer_key="ck_3c69dfb55e7a995cd4305c9fda440350bce945eb",
-    consumer_secret="cs_67bd944bb29e230039a4d311be133ee24a1d7717",
-    version="wc/v3"
-)
 
-
-def obtener_producto_por_sku(sku):
-    response = wcapi.get("products", params={"sku": sku}).json()
-    if isinstance(response, list) and response:
-        return response[0]
-    return None
+def obtener_todos_los_productos():
+    response = wcapi.get("products", params={"per_page": 100}).json()
+    return response
 
 
 def actualizar_producto(producto_local):
-    producto_remoto = obtener_producto_por_sku(producto_local["sku"])
-
-    if not producto_remoto:
-        # Crear producto si no existe
-        response = wcapi.post("products", producto_local).json()
+    try:
+        producto_remoto = obtener_producto_por_sku(producto_local["sku"])
+    except Exception as e:
         mensajes_bot.append(
-            f"🆕 Producto creado: {producto_local['name']} ({producto_local['sku']})")
+            f"❌ Error al obtener producto remoto ({producto_local['sku']}): {e}")
         return
 
-    producto_id = producto_remoto["id"]
-    cambios = {}
+    try:
+        if not producto_remoto:
+            # Crear producto si no existe
+            response = wcapi.post("products", producto_local).json()
+            mensajes_bot.append(
+                f"🆕 Producto creado: {producto_local['name']} ({producto_local['sku']})")
+            return
 
-    campos_comparar = ["name", "price", "regular_price", "stock_quantity"]
-    for campo in campos_comparar:
-        if campo in producto_local and producto_local.get(campo) != producto_remoto.get(campo):
-            cambios[campo] = producto_local[campo]
+        producto_id = producto_remoto["id"]
+        cambios = {}
 
-    # Verificar imagen
-    imagen_local = producto_local.get("images", [])
-    imagen_remota = producto_remoto.get("images", [])
+        campos_comparar = ["name", "price", "regular_price", "stock_quantity"]
+        for campo in campos_comparar:
+            if campo in producto_local and producto_local.get(campo) != producto_remoto.get(campo):
+                cambios[campo] = producto_local[campo]
 
-    if imagen_local and (not imagen_remota or imagen_local[0]["src"] != imagen_remota[0]["src"]):
-        cambios["images"] = imagen_local
+        # Verificar imagen
+        imagen_local = producto_local.get("images", [])
+        imagen_remota = producto_remoto.get("images", [])
 
-    if cambios:
-        wcapi.put(f"products/{producto_id}", cambios).json()
+        if imagen_local and (not imagen_remota or imagen_local[0]["src"] != imagen_remota[0]["src"]):
+            cambios["images"] = imagen_local
+
+        if cambios:
+            response = wcapi.put(f"products/{producto_id}", cambios).json()
+            mensajes_bot.append(
+                f"🔄 Producto actualizado: {producto_local['name']} ({producto_local['sku']})")
+        else:
+            mensajes_bot.append(
+                f"✅ Sin cambios: {producto_local['name']} ({producto_local['sku']})")
+
+        if producto_local.get("type") == "variable":
+            actualizar_variaciones(
+                producto_id, producto_local.get("variations", []))
+
+    except requests.exceptions.ReadTimeout:
         mensajes_bot.append(
-            f"🔄 Producto actualizado: {producto_local['name']} ({producto_local['sku']})")
-    else:
+            f"⏰ Timeout al procesar {producto_local['sku']}. Esperando 5 segundos y reintentando...")
+        time.sleep(5)
+        try:
+            # Reintentar una vez más
+            if not producto_remoto:
+                wcapi.post("products", producto_local).json()
+            else:
+                wcapi.put(f"products/{producto_id}", cambios).json()
+            mensajes_bot.append(
+                f"🔁 Reintento exitoso para: {producto_local['name']} ({producto_local['sku']})")
+        except Exception as e:
+            mensajes_bot.append(
+                f"❌ Falló el reintento para {producto_local['sku']}: {e}")
+    except Exception as e:
         mensajes_bot.append(
-            f"✅ Sin cambios: {producto_local['name']} ({producto_local['sku']})")
-
-    if producto_local.get("type") == "variable":
-        actualizar_variaciones(
-            producto_id, producto_local.get("variations", []))
+            f"❌ Error inesperado con {producto_local['sku']}: {e}")
 
 
 def actualizar_variaciones(parent_id, variaciones_locales):

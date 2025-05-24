@@ -1,20 +1,20 @@
-🆕 Producto creado: Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops (FAKE-1)
-🆕 Producto creado: Mens Casual Premium Slim Fit T-Shirts  (FAKE-2)
-🆕 Producto creado: Mens Cotton Jacket (FAKE-3)
-🆕 Producto creado: Mens Casual Slim Fit (FAKE-4)
-🆕 Producto creado: John Hardy Women's Legends Naga Gold & Silver Dragon Station Chain Bracelet (FAKE-5)
-🆕 Producto creado: Solid Gold Petite Micropave  (FAKE-6)
-🆕 Producto creado: White Gold Plated Princess (FAKE-7)
-🆕 Producto creado: Pierced Owl Rose Gold Plated Stainless Steel Double (FAKE-8)
-🆕 Producto creado: WD 2TB Elements Portable External Hard Drive - USB 3.0  (FAKE-9)
-🆕 Producto creado: SanDisk SSD PLUS 1TB Internal SSD - SATA III 6 Gb/s (FAKE-10)
-🆕 Producto creado: Silicon Power 256GB SSD 3D NAND A55 SLC Cache Performance Boost SATA III 2.5 (FAKE-11)
-🆕 Producto creado: WD 4TB Gaming Drive Works with Playstation 4 Portable External Hard Drive (FAKE-12)
-🆕 Producto creado: Acer SB220Q bi 21.5 inches Full HD (1920 x 1080) IPS Ultra-Thin (FAKE-13)
-🆕 Producto creado: Samsung 49-Inch CHG90 144Hz Curved Gaming Monitor (LC49HG90DMNXZA) – Super Ultrawide Screen QLED  (FAKE-14)
-🆕 Producto creado: BIYLACLESEN Women's 3-in-1 Snowboard Jacket Winter Coats (FAKE-15)
-🆕 Producto creado: Lock and Love Women's Removable Hooded Faux Leather Moto Biker Jacket (FAKE-16)
-🆕 Producto creado: Rain Jacket Women Windbreaker Striped Climbing Raincoats (FAKE-17)
-🆕 Producto creado: MBJ Women's Solid Short Sleeve Boat Neck V  (FAKE-18)
-🆕 Producto creado: Opna Women's Short Sleeve Moisture (FAKE-19)
-🆕 Producto creado: DANVOUY Womens T Shirt Casual Cotton Short (FAKE-20)
+❌ Error al obtener producto remoto (FAKE-1): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-2): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-3): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-4): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-5): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-6): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-7): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-8): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-9): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-10): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-11): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-12): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-13): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-14): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-15): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-16): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-17): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-18): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-19): name 'obtener_producto_por_sku' is not defined
+❌ Error al obtener producto remoto (FAKE-20): name 'obtener_producto_por_sku' is not defined
