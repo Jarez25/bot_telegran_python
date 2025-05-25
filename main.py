@@ -5,12 +5,12 @@ import os
 import subprocess
 from insert_user import insert_user
 from dotenv import load_dotenv
-from funciones.crear_categoria import crear_categoria
 from funciones.conteo_productos import contar_productos
 from funciones.obtener_producto_sku import obtener_producto_por_sku
 from funciones.actualizar_producto import actualizar_producto
 from bot.servicios.clima_servicio import comando_clima
 from bot.comandos.start import comandos_basicos, comandos_woo
+from bot.woocomerce.categoria import comando_categorias
 from conn.woocommerce_config import wcapi
 
 
@@ -167,29 +167,8 @@ def listar_productos(message):
     bot.send_message(message.chat.id, mensaje, parse_mode="Markdown")
 
 
-@bot.message_handler(commands=['nueva_categoria'])  # crear una nueva categoría
-def comando_crear_categoria(message):
-    partes = message.text.strip().split(maxsplit=1)
-    if len(partes) < 2:
-        bot.send_message(
-            message.chat.id, "❗️Por favor, usa el comando así:\n/nueva_categoria Nombre de la categoría")
-        return
-
-    nombre_categoria = partes[1]
-    resultado = crear_categoria(nombre_categoria)
-
-    if resultado:
-        bot.send_message(
-            message.chat.id,
-            f"✅ Categoría creada con éxito:\n📛 Nombre: *{resultado['name']}*\n🆔 ID: `{resultado['id']}`",
-            parse_mode="Markdown"
-        )
-    else:
-        bot.send_message(
-            message.chat.id,
-            "❌ No se pudo crear la categoría. Verifica si ya existe o si hubo un error.",
-            parse_mode="Markdown"
-        )
+# sección de categorías
+comando_categorias(bot)
 
 
 @bot.message_handler(func=lambda message: True)

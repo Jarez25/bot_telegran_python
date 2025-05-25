@@ -21,6 +21,9 @@ def comandos_basicos(bot):
             "/update \\- Actualiza los productos en tu tienda WooCommerce\\.\n"
             "/producto SKU \\- Consulta la información de un producto usando su SKU\\.\n"
             "/nueva\\_categoria \\- Crea una nueva categoría \\(ejemplo: /nueva\\_categoria BOLSO\\)\\.\n"
+            "/listar\\_categorias \\- Lista todas las categorías existentes\\.\n"
+            "/editar\\_categoria \\- Edita una categoría existente \\(ejemplo: /editar\\_categoria ID NuevoNombre\\)\\.\n"
+            "/eliminar\\_categoria \\- Elimina una categoría por su ID \\(ejemplo: /eliminar\\_categoria ID\\)\\.\n"
         )
         bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
 
@@ -29,8 +32,11 @@ comandos_woo = [
     BotCommand("start", "Iniciar el bot y mostrar bienvenida"),
     BotCommand("help", "Mostrar lista de comandos"),
     BotCommand("clima", "Mostrar clima de Managua"),
-    BotCommand("woo", "Sincronizar productos WooCommerce"),  # minúscula
+    BotCommand("woo", "Sincronizar productos WooCommerce"),
     BotCommand("update", "Actualizar productos WooCommerce"),
     BotCommand("producto", "Consultar producto por SKU"),
     BotCommand("nueva_categoria", "Crear nueva categoría"),
+    BotCommand("listar_categorias", "Listar todas las categorías"),
+    BotCommand("editar_categoria", "Editar una categoría existente"),
+    BotCommand("eliminar_categoria", "Eliminar una categoría"),
 ]
