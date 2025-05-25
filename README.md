@@ -2,6 +2,7 @@
 
 Este bot de Telegram está desarrollado usando la librería [pyTelegramBotAPI (Telebot)](https://pytba.readthedocs.io/en/latest/install.html). Su objetivo principal es permitir la interacción con una tienda WooCommerce directamente desde Telegram, facilitando tareas como sincronizar productos, consultar información y administrar categorías.
 
+https://woocommerce.github.io/woocommerce-rest-api-docs/#introduction
 ---
 
 ## 🚀 Características

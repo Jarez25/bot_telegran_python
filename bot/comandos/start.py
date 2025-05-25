@@ -24,6 +24,7 @@ def comandos_basicos(bot):
             "/listar\\_categorias \\- Lista todas las categorías existentes\\.\n"
             "/editar\\_categoria \\- Edita una categoría existente \\(ejemplo: /editar\\_categoria ID NuevoNombre\\)\\.\n"
             "/eliminar\\_categoria \\- Elimina una categoría por su ID \\(ejemplo: /eliminar\\_categoria ID\\)\\.\n"
+            "/descargar\\_pedidos \\- Descarga todos los pedidos en formato CSV\\.\n"
         )
         bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
 
@@ -39,4 +40,5 @@ comandos_woo = [
     BotCommand("listar_categorias", "Listar todas las categorías"),
     BotCommand("editar_categoria", "Editar una categoría existente"),
     BotCommand("eliminar_categoria", "Eliminar una categoría"),
+    BotCommand("descargar_pedidos", "Descargar pedidos como CSV"),
 ]
