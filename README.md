@@ -33,7 +33,7 @@ Este bot de Telegram está desarrollado usando la librería [pyTelegramBotAPI (T
 
    ```bash
    git clone https://github.com/Jarez25/bot_telegran_python.git
-   cd tu-repo
+   cd bot_telegran_python
 
     Crea un entorno virtual (opcional pero recomendado):
 
@@ -64,15 +64,7 @@ python main.py
 
     WooCommerce REST API
 
-🛡️ Notas de seguridad
-
-    Nunca subas tu archivo .env a un repositorio público.
-
-    Usa .gitignore para excluir archivos sensibles como .env.
-
 📄 Licencia
 
 MIT License.
 
-
-¿Deseas que este `README.md` se guarde como archivo dentro del proyecto también?
