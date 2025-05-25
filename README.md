@@ -32,7 +32,7 @@ Este bot de Telegram está desarrollado usando la librería [pyTelegramBotAPI (T
 1. **Clona el repositorio:**
 
    ```bash
-   git clone https://github.com/tuusuario/tu-repo.git
+   git clone https://github.com/Jarez25/bot_telegran_python.git
    cd tu-repo
 
     Crea un entorno virtual (opcional pero recomendado):
