@@ -20,11 +20,15 @@ def comandos_basicos(bot):
             "/woo \\- Pregunta si quieres sincronizar los productos en tu tienda WooCommerce\\.\n"
             "/update \\- Actualiza los productos en tu tienda WooCommerce\\.\n"
             "/producto SKU \\- Consulta la información de un producto usando su SKU\\.\n"
-            "/nueva\\_categoria \\- Crea una nueva categoría \\(ejemplo: /nueva\\_categoria BOLSO\\)\\.\n"
+            "/nueva\\_categoria Nombre \\- Crea una nueva categoría \\(ejemplo: /nueva\\_categoria BOLSO\\)\\.\n"
             "/listar\\_categorias \\- Lista todas las categorías existentes\\.\n"
-            "/editar\\_categoria \\- Edita una categoría existente \\(ejemplo: /editar\\_categoria ID NuevoNombre\\)\\.\n"
-            "/eliminar\\_categoria \\- Elimina una categoría por su ID \\(ejemplo: /eliminar\\_categoria ID\\)\\.\n"
+            "/editar\\_categoria ID NuevoNombre \\- Edita una categoría existente\\.\n"
+            "/eliminar\\_categoria ID \\- Elimina una categoría por su ID\\.\n"
             "/descargar\\_pedidos \\- Descarga todos los pedidos en formato CSV\\.\n"
+            "/pedido\\_estado Estado \\- Descarga pedidos por estado \\(ejemplo: /pedido\\_estado completed\\)\\.\n"
+            "/conteo\\_productos \\- Muestra el número total de productos en la tienda\\.\n"
+            "/todos\\_los\\_productos \\- Lista los productos existentes\\.\n"
+            "/exportar\\_productos \\- Exporta todos los productos a CSV\\.\n"
         )
         bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
 
@@ -41,4 +45,9 @@ comandos_woo = [
     BotCommand("editar_categoria", "Editar una categoría existente"),
     BotCommand("eliminar_categoria", "Eliminar una categoría"),
     BotCommand("descargar_pedidos", "Descargar pedidos como CSV"),
+    BotCommand("pedido_estado", "Descargar pedidos por estado"),
+    BotCommand("conteo_productos", "Mostrar número total de productos"),
+    BotCommand("todos_los_productos", "Listar los productos existentes"),
+    BotCommand("exportar_productos", "Exportar todos los productos a CSV"),
+    BotCommand("factura", "Generar factura PDF del último pedido")
 ]

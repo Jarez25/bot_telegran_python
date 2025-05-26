@@ -9,7 +9,7 @@ from bot.woocomerce.categoria import comando_categorias
 from bot.comandos.msm import registrar_mensajes
 from bot.comandos.agregar import registrar_agregar
 from bot.woocomerce.productos import registrar_comandos_woocommerce
-from bot.woocomerce.pedidos import registrar_comandos_pedidos, registrar_comando_pedidos_por_estado
+from bot.woocomerce.pedidos import registrar_comandos_pedidos, registrar_comando_pedidos_por_estado, registrar_comando_factura_pdf
 from conn.woocommerce_config import wcapi
 
 
@@ -27,16 +27,20 @@ comando_clima(bot, WEATHER_API_KEY)
 registrar_agregar(bot)
 
 registrar_comandos_woocommerce(bot)
+# exportar productos a CSV
+
 
 # sección de categorías
 comando_categorias(bot)
 # pedidos CSV
 registrar_comandos_pedidos(bot)
-# mensajes espejos
-registrar_mensajes(bot)
 
 registrar_comandos_pedidos(bot)
 registrar_comando_pedidos_por_estado(bot)
+registrar_comando_factura_pdf(bot)
+
+# mensajes espejos
+registrar_mensajes(bot)
 
 if __name__ == '__main__':
     try:

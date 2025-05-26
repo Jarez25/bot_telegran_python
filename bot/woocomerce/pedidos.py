@@ -4,6 +4,7 @@ from telebot.types import Message
 from conn.woocommerce_config import wcapi
 from funciones.filtros_pedidos import obtener_pedidos_por_estado
 from funciones.exportar_pedidos_csv import exportar_pedidos_csv
+from pdf.factura_pdf import generar_factura_ultimo_pedido
 
 
 def registrar_comandos_pedidos(bot):
@@ -28,8 +29,6 @@ def registrar_comando_pedidos_por_estado(bot):
 
     @bot.message_handler(commands=['pedidos_estado'])
     def pedidos_por_estado(message: Message):
-        print("Comando /pedidos_estado recibido:",
-              message.text)  # <--- Print para debug
         try:
             texto = message.text.strip()
             partes = texto.split()
@@ -41,22 +40,46 @@ def registrar_comando_pedidos_por_estado(bot):
             estado = partes[1].lower()
             pedidos = obtener_pedidos_por_estado(estado)
 
-            # <--- Print para debug
-            print(f"Pedidos obtenidos: {len(pedidos)}")
-
             if not pedidos:
                 bot.reply_to(message, f"No hay pedidos con estado '{estado}'.")
                 return
 
             respuesta = f"📋 Pedidos con estado *{estado}*:\n\n"
             for pedido in pedidos:
-                cliente = f"{pedido['billing']['first_name']} {pedido['billing']['last_name']}"
-                fecha = pedido['date_created'][:10]
-                total = pedido['total']
-                respuesta += f"🧾 #{pedido['id']} - {cliente} - ${total} - {fecha}\n"
+                # Obtener nombre completo del cliente
+                billing = pedido.get('billing', {})
+                nombre_cliente = f"{billing.get('first_name', '')} {billing.get('last_name', '')}".strip(
+                )
+                fecha = pedido.get('date_created', '')[:10]
+                total = pedido.get('total', '0')
+                pedido_id = pedido.get('id', 'N/A')
+
+                respuesta += f"🧾 Pedido #{pedido_id} - Cliente: {nombre_cliente} - Total: ${total} - Fecha: {fecha}\n"
 
             bot.reply_to(message, respuesta, parse_mode="Markdown")
 
         except Exception as e:
-            print(f"Error en pedidos_por_estado: {e}")  # <--- Print para debug
+            print(f"Error en pedidos_por_estado: {e}")
             bot.reply_to(message, f"❌ Error al obtener pedidos: {e}")
+
+
+def registrar_comando_factura_pdf(bot):
+
+    @bot.message_handler(commands=['factura'])
+    def enviar_factura_pdf(message: Message):
+        bot.send_message(
+            message.chat.id, "📄 Generando factura del último pedido...")
+
+        try:
+            archivo_pdf = generar_factura_ultimo_pedido()
+
+            if archivo_pdf:
+                with open(archivo_pdf, "rb") as f:
+                    bot.send_document(message.chat.id, f,
+                                      caption="🧾 Factura del último pedido")
+            else:
+                bot.send_message(
+                    message.chat.id, "❌ No se pudo generar la factura. No hay pedidos.")
+        except Exception as e:
+            bot.send_message(
+                message.chat.id, f"❌ Error al generar la factura: {e}")

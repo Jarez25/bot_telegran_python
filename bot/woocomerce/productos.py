@@ -4,6 +4,7 @@ from telebot import types
 from conn.woocommerce_config import wcapi
 from funciones.conteo_productos import contar_productos
 from funciones.obtener_producto_sku import obtener_producto_por_sku
+from funciones.exportar_productos_csv import exportar_productos_csv
 
 
 def registrar_comandos_woocommerce(bot):
@@ -128,3 +129,13 @@ def registrar_comandos_woocommerce(bot):
             mensaje = "❌ No se encontraron productos en la tienda."
 
         bot.send_message(message.chat.id, mensaje, parse_mode="Markdown")
+
+    @bot.message_handler(commands=['exportar_productos'])
+    def comando_exportar_productos(message):
+        bot.send_message(message.chat.id, "📦 Exportando productos a CSV...")
+        try:
+            archivo_csv = exportar_productos_csv()
+            with open(archivo_csv, "rb") as archivo:
+                bot.send_document(message.chat.id, archivo)
+        except Exception as e:
+            bot.send_message(message.chat.id, f"❌ Error al exportar: {str(e)}")

@@ -1,3 +1,3 @@
-ID,Fecha,Cliente,Total,Estado
-289,2025-05-26T00:41:17, ,132.25,completed
-288,2025-05-26T00:40:05,jairo medina,12.99,checkout-draft
+Pedido ID,Fecha,Cliente,Teléfono,Correo,Producto(s),Total del Pedido,Método de pago,Estado
+289,2025-05-26T00:41:17,,,,"Mens Casual Premium Slim Fit T-Shirts | Fjallraven - Foldsack No. 1 Backpack, Fits 15 Laptops",132.25,,Completed
+288,2025-05-26T00:40:05,jairo medina,,jarez179@gmail.com,DANVOUY Womens T Shirt Casual Cotton Short,12.99,,Checkout-draft

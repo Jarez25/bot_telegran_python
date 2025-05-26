@@ -1,29 +1,57 @@
 import csv
-from datetime import datetime
 from conn.woocommerce_config import wcapi
 
 
 def exportar_pedidos_csv(nombre_archivo="pedidos.csv"):
-    pedidos = wcapi.get("orders").json()
-    pedidos = pedidos if isinstance(
-        pedidos, list) else pedidos.get('orders', [])
+    pagina = 1
+    pedidos = []
+
+    while True:
+        respuesta = wcapi.get(
+            "orders", params={"per_page": 100, "page": pagina})
+        lote = respuesta.json()
+
+        if not isinstance(lote, list) or not lote:
+            break
+
+        pedidos.extend(lote)
+        pagina += 1
 
     if not pedidos:
         raise Exception("No se encontraron pedidos.")
 
-    # Crea el CSV con encabezados comunes
     with open(nombre_archivo, mode='w', newline='', encoding='utf-8') as archivo_csv:
-        campos = ['ID', 'Fecha', 'Cliente', 'Total', 'Estado']
+        campos = [
+            'Pedido ID', 'Fecha', 'Cliente', 'Teléfono', 'Correo',
+            'Producto(s)', 'Total del Pedido', 'Método de pago', 'Estado'
+        ]
         writer = csv.DictWriter(archivo_csv, fieldnames=campos)
         writer.writeheader()
 
         for pedido in pedidos:
+            billing = pedido.get('billing', {})
+            cliente = f"{billing.get('first_name', '').strip()} {billing.get('last_name', '').strip()}".strip(
+            )
+            telefono = billing.get('phone', '')
+            correo = billing.get('email', '')
+            total = pedido.get('total', '')
+            metodo_pago = pedido.get('payment_method_title', '')
+            estado = pedido.get('status', '').capitalize()
+            fecha = pedido.get('date_created', '')
+
+            productos = [item.get('name', '')
+                         for item in pedido.get('line_items', [])]
+
             writer.writerow({
-                'ID': pedido['id'],
-                'Fecha': pedido['date_created'],
-                'Cliente': f"{pedido['billing']['first_name']} {pedido['billing']['last_name']}",
-                'Total': pedido['total'],
-                'Estado': pedido['status']
+                'Pedido ID': pedido.get('id'),
+                'Fecha': fecha,
+                'Cliente': cliente,
+                'Teléfono': telefono,
+                'Correo': correo,
+                'Producto(s)': ' | '.join(productos),
+                'Total del Pedido': total,
+                'Método de pago': metodo_pago,
+                'Estado': estado
             })
 
     return nombre_archivo
