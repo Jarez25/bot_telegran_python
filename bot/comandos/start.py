@@ -29,6 +29,7 @@ def comandos_basicos(bot):
             "/conteo\\_productos \\- Muestra el número total de productos en la tienda\\.\n"
             "/todos\\_los\\_productos \\- Lista los productos existentes\\.\n"
             "/exportar\\_productos \\- Exporta todos los productos a CSV\\.\n"
+            "Tu madre, por sierto el gordo es gay"
         )
         bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
 

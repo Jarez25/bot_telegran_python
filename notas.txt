@@ -7,3 +7,18 @@
 | `docs`     | Cambios en la documentación                          |
 | `test`     | Agregar o cambiar pruebas                            |
 | `style`    | Cambios de formato, sin tocar lógica (espacios, etc) |
+
+
+url del webhook
+http://192.168.1.161:5000/webhook/pedido
+
+# 🔐 TOKEN del Bot de Telegram
+TELEGRAM_TOKEN=7547936701:AAEEcMqD4fBDBQcqlMVN7m3ArSU8kK5wEtk
+
+# ☁️ API Key para obtener información del clima
+WEATHER_API=d6b2e26223bb104fed7fe1ca5a2013a0
+
+# 🛒 Datos de conexión a WooCommerce
+WC_URL=http://telegran.test
+WC_CONSUMER_KEY=ck_24aa6e4dde43844425ced06b01ce642239218b69
+WC_CONSUMER_SECRET=cs_65998af64315d045c191198ed02b39edd185baed
