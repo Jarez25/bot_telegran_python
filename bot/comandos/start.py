@@ -8,28 +8,29 @@ def comandos_basicos(bot):
         bot.reply_to(message,
                      "👋 ¡Hola! Bienvenido al *Bot de Gestión WooCommerce*.\n\n"
                      "Con este bot podrás consultar productos, sincronizar inventario y realizar acciones útiles para tu tienda en línea.\n\n"
-                     "Escribe /help para ver la lista de comandos disponibles.",)
+                     "Escribe /help para ver la lista de comandos disponibles.",
+                     parse_mode="Markdown")
 
     @bot.message_handler(commands=['help'])
     def send_help(message: Message):
         texto_ayuda = (
             "🤖 *Funciones del bot WooCommerce:*\n\n"
-            "/start \\- Inicia el bot y muestra un mensaje de bienvenida\\.\n"
-            "/help \\- Muestra esta lista de comandos disponibles\\.\n"
-            "/clima \\- Muestra el clima actual de Managua\\.\n"
-            "/woo \\- Pregunta si quieres sincronizar los productos en tu tienda WooCommerce\\.\n"
-            "/update \\- Actualiza los productos en tu tienda WooCommerce\\.\n"
-            "/producto SKU \\- Consulta la información de un producto usando su SKU\\.\n"
-            "/nueva\\_categoria Nombre \\- Crea una nueva categoría \\(ejemplo: /nueva\\_categoria BOLSO\\)\\.\n"
-            "/listar\\_categorias \\- Lista todas las categorías existentes\\.\n"
-            "/editar\\_categoria ID NuevoNombre \\- Edita una categoría existente\\.\n"
-            "/eliminar\\_categoria ID \\- Elimina una categoría por su ID\\.\n"
-            "/descargar\\_pedidos \\- Descarga todos los pedidos en formato CSV\\.\n"
-            "/pedido\\_estado Estado \\- Descarga pedidos por estado \\(ejemplo: /pedido\\_estado completed\\)\\.\n"
-            "/conteo\\_productos \\- Muestra el número total de productos en la tienda\\.\n"
-            "/todos\\_los\\_productos \\- Lista los productos existentes\\.\n"
-            "/exportar\\_productos \\- Exporta todos los productos a CSV\\.\n"
-            "Tu madre, por sierto el gordo es gay"
+            "/start - Inicia el bot y muestra un mensaje de bienvenida.\n"
+            "/help - Muestra esta lista de comandos disponibles.\n"
+            "/clima - Muestra el clima actual de Managua.\n"
+            "/woo - Pregunta si quieres sincronizar los productos en tu tienda WooCommerce.\n"
+            "/update - Actualiza los productos en tu tienda WooCommerce.\n"
+            "/producto SKU - Consulta la información de un producto usando su SKU.\n"
+            "/nueva_categoria Nombre - Crea una nueva categoría (ejemplo: /nueva_categoria BOLSO).\n"
+            "/listar_categorias - Lista todas las categorías existentes.\n"
+            "/editar_categoria ID NuevoNombre - Edita una categoría existente.\n"
+            "/eliminar_categoria ID - Elimina una categoría por su ID.\n"
+            "/descargar_pedidos - Descarga todos los pedidos en formato CSV.\n"
+            "/pedido_estado Estado - Descarga pedidos por estado (ejemplo: /pedido_estado completed).\n"
+            "/conteo_productos - Muestra el número total de productos en la tienda.\n"
+            "/todos_los_productos - Lista los productos existentes.\n"
+            "/exportar_productos - Exporta todos los productos a CSV.\n"
+            "/factura - Genera factura PDF del último pedido."
         )
         bot.reply_to(message, texto_ayuda, parse_mode="Markdown")
 
