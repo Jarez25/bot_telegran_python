@@ -12,7 +12,7 @@ from bot.comandos.agregar import registrar_agregar
 from bot.woocomerce.productos import registrar_comandos_woocommerce
 from bot.woocomerce.pedidos import registrar_comandos_pedidos, registrar_comando_pedidos_por_estado, registrar_comando_factura_pdf
 from conn.woocommerce_config import wcapi
-# from funciones.servidor_webhook import iniciar_servidor  # ❌ Desactivado temporalmente
+from funciones.servidor_webhook import iniciar_servidor  # 💡 Agregado
 
 # Cargar variables del .env
 load_dotenv()
@@ -36,7 +36,9 @@ registrar_mensajes(bot)
 
 if __name__ == '__main__':
     try:
-        # iniciar_servidor()  # ❌ Comentado para pruebas
-        bot.infinity_polling()  # ✅ Activado modo polling
+        # Inicia el servidor en segundo plano
+        threading.Thread(target=iniciar_servidor, daemon=True).start()
+        print("Bot y servidor webhook activos...")
+        bot.polling()
     except Exception as e:
         print(f"❌ Error general: {e}")

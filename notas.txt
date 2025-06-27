@@ -13,82 +13,17 @@ url del webhook
 http://192.168.1.161:5000/webhook/pedido
 
 # 🔐 TOKEN del Bot de Telegram
-TELEGRAM_TOKEN=7593105930:AAHKhC1JH_ZmpUGf1urfGFaFSgYyZ9HmYJE
+TELEGRAM_TOKEN=7547936701:AAEEcMqD4fBDBQcqlMVN7m3ArSU8kK5wEtk
 
 # ☁️ API Key para obtener información del clima
-WEATHER_API=20348a3a513ee9b94f4d021e93d934b5
+WEATHER_API=d6b2e26223bb104fed7fe1ca5a2013a0
 
 # 🛒 Datos de conexión a WooCommerce
-WC_URL=http://tecnoshop.local/
+WC_URL=http://telegran.test
 WC_CONSUMER_KEY=ck_24aa6e4dde43844425ced06b01ce642239218b69
 WC_CONSUMER_SECRET=cs_65998af64315d045c191198ed02b39edd185baed
+
 
 enviar pedido para notificacion automatica 
 
 curl -X POST http://192.168.1.161:5000/webhook/pedido -H "Content-Type: application/json" -d "{\"id\":410,\"billing\":{\"first_name\":\"Jairo\",\"last_name\":\"Medina\"},\"total\":\"150.00\",\"date_created\":\"2025-05-26T21:00:00\",\"status\":\"completed\"}"
-
-
-mejoras 
-
-🛍️ 1. Crear un nuevo producto desde el bot
-
-Comando: /nuevo_producto
-
-    Envío paso a paso por Telegram:
-
-        Nombre del producto
-
-        Descripción
-
-        Precio
-
-        Stock
-
-        Imagen (opcional)
-
-🧩 Usa register_next_step_handler() para hacerlo conversacional.
-📦 2. Activar/Desactivar productos
-
-Comando: /activar_producto SKU o /desactivar_producto SKU
-
-    Útil para mantener productos publicados o no disponibles sin eliminarlos.
-
-📊 3. Dashboard básico con botones
-
-Muestra en un mensaje botones tipo:
-
-🛒 Pedidos hoy | 🧾 Total ventas este mes | 📦 Stock bajo
-
-Usando InlineKeyboardMarkup.
-🧾 4. Enviar notificaciones automáticas
-
-Ejemplo: cada vez que se genere un nuevo pedido, el bot te avisa.
-
-Esto puedes hacerlo usando webhook de WooCommerce hacia un endpoint Flask o FastAPI que luego use bot.send_message(chat_id, ...).
-🧍 5. Gestión de clientes desde Telegram
-
-Comando: /cliente correo@ejemplo.com
-
-    Devuelve:
-
-        Nombre
-
-        Teléfono
-
-        Total gastado
-
-        Último pedido
-
-🗂️ 6. Subida masiva de productos (por CSV)
-
-    Enviar un archivo .csv por Telegram
-
-    El bot lo analiza y crea o actualiza productos
-
-🛡️ Seguridad recomendada
-
-    Asocia el bot a un solo usuario (tú).
-
-    Valida message.chat.id antes de ejecutar cualquier comando sensible.
-
-    También puedes crear un "modo seguro" por contraseña o token para nuevos admins.
